@@ -17,13 +17,13 @@ describe('user routes', () => {
     const res = await agent
       .post('/auth/signup')
       .send({
-        email: 'tuckerhoog@tutanota.com',
+        username: 'grahf',
         password: 'password',
       });
 
     expect(res.body).toEqual({
       id: '1',
-      email: 'tuckerhoog@tutanota.com',
+      username: 'grahf',
     }); 
   
   });
@@ -31,20 +31,20 @@ describe('user routes', () => {
   it('logs in a user', async () => {
 
     await UserService.create({
-      email: 'tuckerhoog@tutanota.com', 
+      username: 'grahf', 
       password: 'password', 
     });
 
     const res = await agent
       .post('/auth/login')
       .send({
-        email: 'tuckerhoog@tutanota.com',
+        username: 'grahf',
         password: 'password',
       });
 
     expect(res.body).toEqual({
       id: '1',
-      email: 'tuckerhoog@tutanota.com'
+      username: 'grahf'
     });
     
   });
