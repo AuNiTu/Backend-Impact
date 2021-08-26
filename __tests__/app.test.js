@@ -3,6 +3,7 @@ import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserService';
+import Interest from '../lib/models/Interest';
 
 describe('user routes', () => {
 
@@ -82,5 +83,41 @@ describe('interest routes', () => {
       wildfires: false,
       userId: '1'
     });
+
   });
+
+  it('updates an interest', async () => {
+
+    const user = await UserService.create({
+      username: 'grahf', 
+      password: 'password', 
+    });
+
+    const oldInterests = await Interest.add({
+      deforestation: true,
+      airQuality: true,
+      c02: true,
+      wildfires: true,
+      userId: user.id       
+    });
+
+    oldInterests.wildfires = false;
+
+    const newInterests = {
+      id: '1',
+      deforestation: true,
+      airQuality: true,
+      c02: true,
+      wildfires: false,
+      userId: user.id       
+    };
+
+    const res = await request(app)
+      .put(`/interests/change/${user.id}`)
+      .send(newInterests);
+    
+    expect(res.body).toEqual(newInterests);
+
+  });
+
 });
