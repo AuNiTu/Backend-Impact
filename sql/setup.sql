@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS interests (
   deforestation BOOLEAN NOT NULL DEFAULT FALSE,
   wildfires BOOLEAN NOT NULL DEFAULT FALSE,
   air_quality BOOLEAN NOT NULL DEFAULT FALSE,
-  fk_user_id BIGINT UNIQUE REFERENCES users(id)
+  fk_user_id BIGINT REFERENCES users(id)
 );
