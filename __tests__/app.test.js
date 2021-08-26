@@ -50,3 +50,37 @@ describe('user routes', () => {
   });
 
 });
+
+describe('interest routes', () => {
+
+  beforeEach(() => {
+    return setup(pool);
+  });
+
+  it('adds a new interest to a user', async () => {
+
+    const user = await UserService.create({
+      username: 'grahf', 
+      password: 'password', 
+    });
+
+    const res = await request(app)
+      .post('/interests/add')
+      .send({
+        deforestation: true,
+        airQuality: false,
+        c02: false,
+        wildfires: false,
+        userId: user.id
+      });
+
+    expect(res.body).toEqual({
+      id: '1',
+      deforestation: true,
+      airQuality: false,
+      c02: false,
+      wildfires: false,
+      userId: '1'
+    });
+  });
+});
