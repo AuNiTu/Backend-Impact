@@ -3,7 +3,7 @@ import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserService';
-import Interest from '../lib/models/Interest';
+import Interest from '../lib/models/Interest.js';
 
 describe('user routes', () => {
 
