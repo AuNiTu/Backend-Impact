@@ -3,7 +3,7 @@ import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserService';
-import Interest from '../lib/models/Interest.js';
+// import Interest from '../lib/models/Interest.js';
 
 describe('user routes', () => {
 
@@ -56,6 +56,24 @@ describe('user routes', () => {
       latitude: "34.0717792"
     });
     
+  });
+
+  it('gets users location', async () => {
+    
+    await UserService.create({
+      username: 'grahf', 
+      password: 'password', 
+      longitude: -80.9418786,
+      latitude: 34.0717792
+    });
+
+    const res = await agent
+    .get('/auth/location/grahf');
+
+    expect(res.body).toEqual({
+      longitude: "-80.9418786",
+      latitude: "34.0717792"
+    });
   });
 
 });
