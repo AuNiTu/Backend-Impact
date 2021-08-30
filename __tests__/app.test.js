@@ -3,6 +3,7 @@ import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import UserService from '../lib/services/UserService';
+import ensureAuth from '../lib/middleware/ensureAuth.js';
 // import Interest from '../lib/models/Interest.js';
 
 describe('user routes', () => {
@@ -58,7 +59,7 @@ describe('user routes', () => {
     
   });
 
-  it('gets users location', async () => {
+  it('gets users location', ensureAuth, async () => {
     
     await UserService.create({
       username: 'grahf', 
@@ -74,6 +75,33 @@ describe('user routes', () => {
       longitude: "-80.9418786",
       latitude: "34.0717792"
     });
+  });
+
+  it('test verify route', ensureAuth, async () => {
+
+    const user = await UserService.create({
+      username: 'grahf2', 
+      password: 'password2', 
+      longitude: -80.9418786,
+      latitude: 34.0717792
+    });
+
+    await agent
+    .post('/auth/login')
+    .send({
+      username: 'grahf2', 
+      password: 'password2', 
+    });
+
+    const res = await agent
+    .get('/auth/verify');
+
+    expect(res.body).toEqual({
+      id: user.id,
+      username: 'grahf2', 
+      longitude: '-80.9418786',
+      latitude: '34.0717792'
+    })
   });
 
 });
