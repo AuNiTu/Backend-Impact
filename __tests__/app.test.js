@@ -77,6 +77,40 @@ describe('user routes', () => {
     });
   });
 
+  it('updates users location', async () => {
+
+    const user = await UserService.create({
+      username: 'grahf2', 
+      password: 'password2', 
+      longitude: -80.9418786,
+      latitude: 34.0717792
+    });
+
+    user.longitude = -81;
+    user.latitude = 35;
+
+    const changedUser = {
+      id: '1',
+      username: 'grahf2', 
+      longitude: '-81',
+      latitude: '35'
+    };
+
+    await agent
+    .post('/auth/login')
+    .send({
+      username: 'grahf2', 
+      password: 'password2', 
+    });
+
+    const res = await request(app)
+      .put('/auth/update/grahf2')
+      .send(user);
+
+    expect(res.body).toEqual(changedUser);
+    
+  });
+
   it('test verify route', ensureAuth, async () => {
 
     const user = await UserService.create({
